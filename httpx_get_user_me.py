@@ -13,14 +13,15 @@ print(login_response.status_code)
 
 access_payload = login_response_data["token"]["accessToken"]
 
-print(access_payload)
+#print(access_payload)
 
 headers = {
     "Accept": "application/json",
     "Authorization": f"Bearer {access_payload}",
 }
 
-data_response = httpx.get("http://localhost:8000/api/v1/users/me", headers=headers)
+with httpx.Client(headers={"Accept": "application/json", "Authorization": f"Bearer {access_payload}",}) as client:
+  data_response = client.get("http://localhost:8000/api/v1/users/me")
 
-print(data_response.status_code)
 print(data_response.json())
+print(data_response.status_code)
